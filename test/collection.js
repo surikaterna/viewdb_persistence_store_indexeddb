@@ -1,0 +1,75 @@
+var should = require('should');
+
+var Store = require('../lib/store');
+var Collection = require('../lib/collection');
+var getDb = require('./util');
+
+describe('Collection', function() {
+	it('#find with empty array should return 0 docs', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').find({}).toArray(function(err, results) {
+				results.length.should.equal(0);
+				done();
+			});
+		});
+	});
+	it('#insert two documents with same key should throw', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').insert({id:'echo'}, function(err, result) {
+				if(err) {
+					done();
+				} else {
+					done(new Error('should have thrown unique constraint'));
+				}
+			});
+		});
+	});	
+	it('#update documents already existing', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').save({id:'echo', version:2});
+			store.collection('dollhouse').find({}).toArray(function(err, results) {
+				results.length.should.equal(1);
+				results[0].version.should.equal(2);
+				done();
+			});
+		});
+	});	
+	it('#find {} should return single inserted document', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').find({}).toArray(function(err, results) {
+				results.length.should.equal(1);
+				done();
+			});
+		});
+	});
+	it('#find {} should return multiple inserted documents', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').insert({id:'sierra'});
+			store.collection('dollhouse').find({}).toArray(function(err, results) {
+				results.length.should.equal(2);
+				done();
+			});
+		});
+	});
+	it('#find {id:"echo"} should return correct document', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').insert({id:'sierra'});
+			store.collection('dollhouse').find({id:'echo'}).toArray(function(err, results) {
+				results.length.should.equal(1);
+				results[0].id.should.equal('echo');
+				done();
+			});
+		});
+	});	
+})

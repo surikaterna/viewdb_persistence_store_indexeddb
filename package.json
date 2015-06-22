@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test --recursive",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test -u exports -R spec",
+    "coverage-start": "istanbul cover node_modules/mocha/bin/_mocha test --recursive -- -u exports -R spec && start coverage/lcov-report/index.html",
+    "jshint": "jshint ./lib",
+    "jscs": "jscs -p google ./lib"
   },
   "repository": {
     "type": "git",
@@ -15,8 +19,19 @@
   "bugs": {
     "url": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb/issues"
   },
+  "devDependencies": {
+    "istanbul": "^0.3.2",
+    "jshint": "^2.5.10",
+    "mocha": "^2.0.1",
+    "indexeddb-js": "0.0.14",
+    "sqlite3": "^3.0.8",
+    "should": "^4.1.0"
+  },
   "homepage": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb#readme",
   "dependencies": {
-    "kuery": "^0.1.0"
+    "bluebird": "^2.9.30",
+    "kuery": "^0.1.0",
+    "lodash": "^3.9.3",
+    "node-uuid": "^1.4.3"
   }
 }
