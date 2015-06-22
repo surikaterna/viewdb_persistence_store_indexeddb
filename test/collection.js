@@ -17,8 +17,8 @@ describe('Collection', function() {
 	it('#insert two documents with same key should throw', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
-			store.collection('dollhouse').insert({id:'echo'});
-			store.collection('dollhouse').insert({id:'echo'}, function(err, result) {
+			store.collection('dollhouse').insert({_id:'echo'});
+			store.collection('dollhouse').insert({_id:'echo'}, function(err, result) {
 				if(err) {
 					done();
 				} else {
@@ -30,8 +30,8 @@ describe('Collection', function() {
 	it('#update documents already existing', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
-			store.collection('dollhouse').insert({id:'echo'});
-			store.collection('dollhouse').save({id:'echo', version:2});
+			store.collection('dollhouse').insert({_id:'echo'});
+			store.collection('dollhouse').save({_id:'echo', version:2});
 			store.collection('dollhouse').find({}).toArray(function(err, results) {
 				results.length.should.equal(1);
 				results[0].version.should.equal(2);
@@ -42,7 +42,7 @@ describe('Collection', function() {
 	it('#find {} should return single inserted document', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
-			store.collection('dollhouse').insert({id:'echo'});
+			store.collection('dollhouse').insert({_id:'echo'});
 			store.collection('dollhouse').find({}).toArray(function(err, results) {
 				results.length.should.equal(1);
 				done();
@@ -52,24 +52,36 @@ describe('Collection', function() {
 	it('#find {} should return multiple inserted documents', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
-			store.collection('dollhouse').insert({id:'echo'});
-			store.collection('dollhouse').insert({id:'sierra'});
+			store.collection('dollhouse').insert({_id:'echo'});
+			store.collection('dollhouse').insert({_id:'sierra'});
 			store.collection('dollhouse').find({}).toArray(function(err, results) {
 				results.length.should.equal(2);
 				done();
 			});
 		});
 	});
-	it('#find {id:"echo"} should return correct document', function(done) {
+	it('#find {_id:"echo"} should return correct document', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
-			store.collection('dollhouse').insert({id:'echo'});
-			store.collection('dollhouse').insert({id:'sierra'});
-			store.collection('dollhouse').find({id:'echo'}).toArray(function(err, results) {
+			store.collection('dollhouse').insert({_id:'echo'});
+			store.collection('dollhouse').insert({_id:'sierra'});
+			store.collection('dollhouse').find({_id:'echo'}).toArray(function(err, results) {
 				results.length.should.equal(1);
-				results[0].id.should.equal('echo');
+				results[0]._id.should.equal('echo');
 				done();
 			});
 		});
 	});	
+	it('#find with complex key {"name.first":"echo"} should return correct document', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({_id:'echo', name:{first:'ECHO', last:"TV"}});
+			store.collection('dollhouse').insert({_id:'sierra', name:{first:'SIERRA', last:"TV"}});
+			store.collection('dollhouse').find({"name.first":'ECHO'}).toArray(function(err, results) {
+				results.length.should.equal(1);
+				results[0]._id.should.equal('echo');
+				done();
+			});
+		});
+	});		
 })
