@@ -27,6 +27,21 @@ describe('Collection', function() {
 			});
 		});
 	});	
+	it('#insert two documents with same key but in different collections should work', function(done) {
+		var store = new Store(getDb());
+		store.open().then(function() {
+			store.collection('dollhouse').insert({_id:'echo'});
+			store.collection('dollhouse2').insert({_id:'echo'}, function(err, result) {
+				if(err) {
+					console.log(err);
+					done(new Error('should not have thrown unique constraint'));
+				} else {
+					done();
+				}
+			});
+		});
+	});	
+
 	it('#update documents already existing', function(done) {
 		var store = new Store(getDb());
 		store.open().then(function() {
