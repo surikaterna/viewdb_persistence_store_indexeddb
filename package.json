@@ -33,7 +33,7 @@
   "homepage": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb#readme",
   "dependencies": {
     "bluebird": "^2.9.30",
-    "kuery": "^0.1.0",
+    "kuery": "^0.2.0",
     "lodash": "^3.9.3",
     "node-uuid": "^1.4.3"
   }
