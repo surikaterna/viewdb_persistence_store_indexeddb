@@ -1,6 +1,6 @@
 {
   "name": "viewdb_persistence_store_indexeddb",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "url": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb/issues"
   },
   "peerDependencies": {
-    "viewdb": "^0.1.10"
+    "viewdb": "^0.2.0"
   },
   "devDependencies": {
     "istanbul": "^0.3.2",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb#readme",
   "dependencies": {
     "bluebird": "^2.9.30",
-    "kuery": "^0.2.0",
+    "kuery": "^0.3.0",
     "lodash": "^3.9.3",
     "node-uuid": "^1.4.3"
   }
