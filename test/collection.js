@@ -130,4 +130,44 @@ describe('Collection', function () {
       });
     });
   });
-})
+  it('#count should return number of documents', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse').find({}).count(function (err, count) {
+        count.should.equal(2);
+        done();
+      });
+    });
+  });
+  it('#count should return number of documents with filter', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse').find({_id: 'echo'}).count(function (err, count) {
+        count.should.equal(1);
+        done();
+      });
+    });
+  });
+ it('#count should include skip', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse').find({}).skip(1).count(true, function (err, count) {
+        count.should.equal(1);
+        done();
+      });
+    });
+  });      
+   it('#count should include skip only when explicity stated', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse').find({}).skip(1).count(function (err, count) {
+        count.should.equal(2);
+        done();
+      });
+    });
+  });      
+});
