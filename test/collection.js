@@ -130,6 +130,32 @@ describe('Collection', function () {
       });
     });
   });
+  it('#sort should sort on a property', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'alpha' });
+      store.collection('dollhouse').insert({ _id: 'beta' });
+      store.collection('dollhouse').insert({ _id: 'cosworth' });
+      store.collection('dollhouse').insert({ _id: 'dingo' });
+
+      store.collection('dollhouse').find({}).sort({_id: 1}).toArray(function (err, results) {
+        results[0]._id.should.equal('alpha');
+        done();
+      });
+    });
+  });
+  it('#sort should sort on a property, descending', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'alpha' });
+      store.collection('dollhouse').insert({ _id: 'beta' });
+      store.collection('dollhouse').insert({ _id: 'cosworth' });
+      store.collection('dollhouse').insert({ _id: 'dingo' });
+
+      store.collection('dollhouse').find({}).sort({_id: -1}).toArray(function (err, results) {
+        results[0]._id.should.equal('dingo');
+        done();
+      });
+    });
+  });
   it('#count should return number of documents', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
@@ -159,7 +185,7 @@ describe('Collection', function () {
         done();
       });
     });
-  });      
+  });
    it('#count should include skip only when explicity stated', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
@@ -169,5 +195,5 @@ describe('Collection', function () {
         done();
       });
     });
-  });      
+  });
 });
