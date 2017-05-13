@@ -59,7 +59,7 @@ describe('Collection', function () {
     });
   });
 
-  it.only('#update documents already existing', function (done) {
+  it('#update documents already existing', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
       store.collection('dollhouse').save({ _id: 'echo', version: 2 });
@@ -156,7 +156,28 @@ describe('Collection', function () {
       });
     });
   });
-/*  it('#count should return number of documents', function (done) {
+  it('#insert documents via bulk', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert([{ _id: 'echo' }, { _id: 'sierra' }]);
+      store.collection('dollhouse').find({}).toArray(function (err, results) {
+        results.length.should.equal(2);
+        done();
+      });
+    });
+  });
+  it('#update documents via bulk', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert([{ _id: 'echo' }, { _id: 'sierra' }]);
+      store.collection('dollhouse').save([{ _id: 'echo', version: 2 }, { _id: 'sierra', version: 22 }]);
+      store.collection('dollhouse').find({}).toArray(function (err, results) {
+        results.length.should.equal(2);
+        results[0].version.should.equal(2);
+        results[1].version.should.equal(22);
+        done();
+      });
+    });
+  });  
+  it('#count should return number of documents', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
       store.collection('dollhouse').insert({ _id: 'sierra' });
@@ -196,5 +217,5 @@ describe('Collection', function () {
       });
     });
   });
-*/  
+  
 });
