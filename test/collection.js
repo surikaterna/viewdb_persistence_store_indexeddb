@@ -176,7 +176,7 @@ describe('Collection', function () {
         done();
       });
     });
-  });  
+  });
   it('#count should return number of documents', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
@@ -217,5 +217,49 @@ describe('Collection', function () {
       });
     });
   });
-  
+  it('#find {_id:"echo"} should use primary key index', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse')._isIdentityQuery({ _id: 'echo' }).should.equal(true);
+      done();
+    });
+  });
+  it('#find {id:"echo"} should use primary key index', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse')._isIdentityQuery({ id: 'echo' }).should.equal(true);
+      done();
+    });
+  });
+  it('#find {xid:"echo"} should not use primary key index', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse')._isIdentityQuery({ xid: 'echo' }).should.equal(false);
+      done();
+    });
+  });
+  it('#find {id:"echo", age:12} should not use primary key index', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse')._isIdentityQuery({ id: 'echo', age:12 }).should.equal(false);
+      done();
+    });
+  });
+  it('#_getByKey {id:"echo"} should return value', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse')._getByKey({query: {_id:'echo'}}, function(err, res) {
+        res.length.should.equal(1);
+        res[0]._id.should.equal('echo');
+        done();
+      });
+    });
+  });
+  it('#_getByKey {id:"echo-no-match"} should return 0 value', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse')._getByKey({query: {_id:'echo-no-match'}}, function(err, res) {
+        res.length.should.equal(0);
+        done();
+      });
+    });
+  });
 });
