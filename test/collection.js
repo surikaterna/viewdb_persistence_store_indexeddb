@@ -245,8 +245,8 @@ describe('Collection', function () {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
       store.collection('dollhouse').insert({ _id: 'sierra' });
-      store.collection('dollhouse').find({ _id: { $in: ['echo']} }).toArray(function (err, results) {
-        results.length.should.equal(1);
+      store.collection('dollhouse').find({ _id: { $in: ['echo', 'sierra']} }).toArray(function (err, results) {
+        results.length.should.equal(2);
         results[0]._id.should.equal('echo');
         done();
       });
