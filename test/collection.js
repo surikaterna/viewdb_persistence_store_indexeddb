@@ -241,6 +241,17 @@ describe('Collection', function () {
       done();
     });
   });
+  it('#find {_id: $in ["echo"]} should return correct document', function (done) {
+    store.open().then(function () {
+      store.collection('dollhouse').insert({ _id: 'echo' });
+      store.collection('dollhouse').insert({ _id: 'sierra' });
+      store.collection('dollhouse').find({ _id: { $in: ['echo']} }).toArray(function (err, results) {
+        results.length.should.equal(1);
+        results[0]._id.should.equal('echo');
+        done();
+      });
+    });
+  });
   it('#_getByKey {id:"echo"} should return value', function (done) {
     store.open().then(function () {
       store.collection('dollhouse').insert({ _id: 'echo' });
