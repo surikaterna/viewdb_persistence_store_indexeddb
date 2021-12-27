@@ -1,6 +1,6 @@
 {
   "name": "viewdb_persistence_store_indexeddb",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,12 +29,12 @@
     "jshint": "^2.5.10",
     "mocha": "^2.0.1",
     "should": "^4.1.0",
-    "viewdb": "^0.5.9"
+    "viewdb": "^0.5.10"
   },
   "homepage": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb#readme",
   "dependencies": {
     "bluebird": "^2.9.30",
-    "kuery": "^0.5.1",
+    "kuery": "^0.5.2",
     "lodash": "^3.9.3",
     "node-uuid": "^1.4.3"
   }
