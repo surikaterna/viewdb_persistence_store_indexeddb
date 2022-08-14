@@ -2,8 +2,12 @@
   "name": "viewdb_persistence_store_indexeddb",
   "version": "0.3.7",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "build": "rimraf lib && npm run build:src",
+    "build:watch": "rimraf lib && npm run build:src:watch",
+    "build:src": "swc src --out-dir lib",
+    "build:src:watch": "npm run build:src -- --watch",
     "test": "mocha test --recursive",
     "test.watch": "mocha test --recursive --watch",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test -u exports -R spec",
@@ -24,10 +28,13 @@
     "viewdb": "^0.5.1"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.230",
     "fake-indexeddb": "^2.0.2",
     "istanbul": "^0.3.2",
     "jshint": "^2.5.10",
     "mocha": "^2.0.1",
+    "rimraf": "^3.0.2",
     "should": "^4.1.0",
     "viewdb": "^0.5.10"
   },
