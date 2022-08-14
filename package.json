@@ -8,10 +8,10 @@
     "build:watch": "rimraf lib && npm run build:src:watch",
     "build:src": "swc src --out-dir lib",
     "build:src:watch": "npm run build:src -- --watch",
-    "test": "mocha test --recursive",
-    "test.watch": "mocha test --recursive --watch",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test -u exports -R spec",
-    "coverage-start": "istanbul cover node_modules/mocha/bin/_mocha test --recursive -- -u exports -R spec && start coverage/lcov-report/index.html",
+    "test": "jest --colors",
+    "test:watch": "npm run test -- --watch",
+    "coverage": "npm run test -- --collectCoverage",
+    "coverage:start": "npm run coverage && start coverage/lcov-report/index.html",
     "jshint": "jshint src",
     "jscs": "jscs -p google src"
   },
@@ -19,7 +19,9 @@
     "type": "git",
     "url": "git+https://github.com/surikaterna/viewdb_persistence_store_indexeddb.git"
   },
-  "author": "Andreas Karlsson",
+  "author": {
+    "name": "Surikat"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb/issues"
@@ -30,12 +32,11 @@
   "devDependencies": {
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.230",
-    "fake-indexeddb": "^2.0.2",
-    "istanbul": "^0.3.2",
+    "@swc/jest": "^0.2.22",
+    "fake-indexeddb": "^4.0.0",
+    "jest": "^28.1.3",
     "jshint": "^2.5.10",
-    "mocha": "^2.0.1",
     "rimraf": "^3.0.2",
-    "should": "^4.1.0",
     "viewdb": "^0.5.10"
   },
   "homepage": "https://github.com/surikaterna/viewdb_persistence_store_indexeddb#readme",
