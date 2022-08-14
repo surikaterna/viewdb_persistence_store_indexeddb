@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var Collection = require('./collection');
+var Collection = require('./Collection');
 
 
 var Store = function (idb, name) {

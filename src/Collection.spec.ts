@@ -1,4 +1,4 @@
-var Store = require('./store');
+var Store = require('./Store');
 
 describe('Collection', function () {
   var store;

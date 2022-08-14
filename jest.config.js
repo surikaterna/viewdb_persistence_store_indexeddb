@@ -5,7 +5,7 @@ module.exports = {
     '^.+\\.[t|j]s$': '@swc/jest'
   },
   testMatch: [
-    '**/?(*.)+(spec|test).js'
+    '**/?(*.)+(spec|test).ts'
   ],
   moduleFileExtensions: ['ts', 'js'],
   clearMocks: true,
