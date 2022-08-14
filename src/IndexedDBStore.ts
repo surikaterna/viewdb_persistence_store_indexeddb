@@ -2,8 +2,7 @@ var Promise = require('bluebird');
 var Collection = require('./IndexedDBCollection');
 
 
-var IndexedDBStore = function (idb, name) {
-  this._idb = idb;
+var IndexedDBStore = function (name) {
   this._db;
   this._name = (name ? 'vdb_' + name : 'vdb');
   this._collections = {};
@@ -11,7 +10,7 @@ var IndexedDBStore = function (idb, name) {
 
 IndexedDBStore.prototype.open = function (callback) {
   var self = this;
-  var request = this._idb.open(this._name, 2);
+  var request = indexedDB.open(this._name, 2);
   return new Promise(function (resolve, reject) {
     request.onsuccess = function (event) {
       self._db = event.target.result;

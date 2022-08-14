@@ -3,15 +3,14 @@ var Store = require('./IndexedDBStore');
 describe('Collection', function () {
   var store;
   beforeEach(function (done) {
-    store = new Store(indexedDB);
+    store = new Store();
     done();
   });
   afterEach(function (done) {
     if (store) {
       store.close().then(function () {
         // destroy the world by t bruun
-        var idb = store._idb;
-        idb._databases.clear();
+        indexedDB._databases.clear();
         done();
       });
     }
