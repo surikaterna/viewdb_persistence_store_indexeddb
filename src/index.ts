@@ -1,1 +1,1 @@
-module.exports = require('./store');
+module.exports = require('./IndexedDBStore');

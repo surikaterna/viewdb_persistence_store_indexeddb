@@ -6,17 +6,17 @@ var Cursor = require('viewdb').Cursor;
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 
-var Collection = function (db, name) {
+var IndexedDBCollection = function (db, name) {
   EventEmitter.call(this);
   this._db = db;
   this._name = name;
 }
 
-util.inherits(Collection, EventEmitter);
+util.inherits(IndexedDBCollection, EventEmitter);
 
-Collection.Cursor = Cursor;
+IndexedDBCollection.Cursor = Cursor;
 
-Collection.prototype._isIdentityQuery = function (query, options) {
+IndexedDBCollection.prototype._isIdentityQuery = function (query, options) {
   var keys = Object.keys(query);
   if (keys.length === 1 && (keys[0] === 'id' || keys[0] === '_id') && (typeof query['id'] === 'string' || typeof query['_id'] === 'string')) {
     return true;
@@ -25,7 +25,7 @@ Collection.prototype._isIdentityQuery = function (query, options) {
   }
 }
 
-Collection.prototype.find = function (query, options) {
+IndexedDBCollection.prototype.find = function (query, options) {
   if (this._isIdentityQuery(query)) {
     return new Cursor(this, { query: query }, options, this._getByKey.bind(this));
   } else {
@@ -33,15 +33,15 @@ Collection.prototype.find = function (query, options) {
   }
 };
 
-Collection.prototype._getKey = function (document) {
+IndexedDBCollection.prototype._getKey = function (document) {
   return this._name + "_" + document['_id'];
 }
 
-Collection.prototype.insert = function (documents, options, callback) {
+IndexedDBCollection.prototype.insert = function (documents, options, callback) {
   return this._write('add', documents, options, callback);
 }
 
-Collection.prototype._write = function (op, documents, options, callback) {
+IndexedDBCollection.prototype._write = function (op, documents, options, callback) {
   var self = this;
   if (_.isFunction(options)) {
     callback = options;
@@ -90,11 +90,11 @@ Collection.prototype._write = function (op, documents, options, callback) {
 }
 
 
-Collection.prototype.save = function (documents, options, callback) {
+IndexedDBCollection.prototype.save = function (documents, options, callback) {
   return this._write('put', documents, options, callback);
 }
 
-Collection.prototype.drop = function (callback) {
+IndexedDBCollection.prototype.drop = function (callback) {
   var txn = this._db.transaction(['documents'], 'readwrite');
   var docs = txn.objectStore('documents');
   var cursor = docs.index('$collection').openCursor(this._name);
@@ -118,7 +118,7 @@ Collection.prototype.drop = function (callback) {
   }
 };
 
-Collection.prototype.remove = function (query, options, callback) {
+IndexedDBCollection.prototype.remove = function (query, options, callback) {
   var self = this;
   if (_.isFunction(options)) {
     callback = options;
@@ -153,7 +153,7 @@ Collection.prototype.remove = function (query, options, callback) {
   });
 };
 
-Collection.prototype._getDocuments = function (query, callback) {
+IndexedDBCollection.prototype._getDocuments = function (query, callback) {
   var qry = query.query || query;
   var txn = this._db.transaction(['documents'], 'readonly');
   var docs = txn.objectStore('documents');
@@ -176,7 +176,7 @@ Collection.prototype._getDocuments = function (query, callback) {
     }
   }
 };
-Collection.prototype._getByKey = function (query, callback) {
+IndexedDBCollection.prototype._getByKey = function (query, callback) {
   var qry = query.query || query;
   var txn = this._db.transaction(['documents'], 'readonly');
   var docs = txn.objectStore('documents');
@@ -195,4 +195,4 @@ Collection.prototype._getByKey = function (query, callback) {
     callback(new Error('Unable to _getByKey ' + key));
   }
 };
-module.exports = Collection;
+module.exports = IndexedDBCollection;

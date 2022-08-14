@@ -1,15 +1,15 @@
 var Promise = require('bluebird');
-var Collection = require('./Collection');
+var Collection = require('./IndexedDBCollection');
 
 
-var Store = function (idb, name) {
+var IndexedDBStore = function (idb, name) {
   this._idb = idb;
   this._db;
   this._name = (name ? 'vdb_' + name : 'vdb');
   this._collections = {};
 }
 
-Store.prototype.open = function (callback) {
+IndexedDBStore.prototype.open = function (callback) {
   var self = this;
   var request = this._idb.open(this._name, 2);
   return new Promise(function (resolve, reject) {
@@ -41,7 +41,7 @@ Store.prototype.open = function (callback) {
   }).nodeify(callback);
 }
 
-Store.prototype.close = function (callback) {
+IndexedDBStore.prototype.close = function (callback) {
   var self = this;
   return new Promise(function (resolve, reject) {
     var req = self._db.close();
@@ -49,7 +49,7 @@ Store.prototype.close = function (callback) {
   }).nodeify(callback);
 }
 
-Store.prototype.delete = function (callback) {
+IndexedDBStore.prototype.delete = function (callback) {
   var self = this;
   return new Promise(function (resolve, reject) {
     var req = self._idb.deleteDatabase(this._name);
@@ -62,7 +62,7 @@ Store.prototype.delete = function (callback) {
   }).nodeify(callback);
 }
 
-Store.prototype.collection = function (name, callback) {
+IndexedDBStore.prototype.collection = function (name, callback) {
   var collection = this._collections[name];
   if (!collection) {
     collection = this._collections[name] = new Collection(this._db, name);
@@ -73,4 +73,4 @@ Store.prototype.collection = function (name, callback) {
   return collection;
 }
 
-module.exports = Store;
+module.exports = IndexedDBStore;

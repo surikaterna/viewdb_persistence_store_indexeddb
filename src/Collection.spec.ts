@@ -1,4 +1,4 @@
-var Store = require('./Store');
+var Store = require('./IndexedDBStore');
 
 describe('Collection', function () {
   var store;
